@@ -12,6 +12,7 @@ import java.awt.*;
 public class EnemyBullet extends BaseSprite implements Drawable, Moveable {
 
     private Image image;
+
     private int speed = FrameConstant.GAME_SPEED *4;
 
     public EnemyBullet() {
@@ -20,6 +21,7 @@ public class EnemyBullet extends BaseSprite implements Drawable, Moveable {
     public EnemyBullet(int x, int y, Image image) {
         super(x, y);
         this.image = image;
+
     }
 
     @Override
@@ -53,9 +55,16 @@ public class EnemyBullet extends BaseSprite implements Drawable, Moveable {
     public void collisionTesting(Plane plane){
         if (plane.getRectangle().intersects(this.getRectangle())){
             GameFrame gameFrame = DateStore.get("gameFrame");
+            plane.hp--;
             gameFrame.enemyBulletList.remove(this);
-            gameFrame.gameOver = true;
+            if (plane.hp == 0) {
+                gameFrame.gameOver = true;
+            }
         }
 
     }
+
+
+
+
 }

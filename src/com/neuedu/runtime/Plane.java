@@ -15,9 +15,13 @@ public class Plane extends BaseSprite implements Drawable, Moveable {
 
     private Image image;
 
-    private boolean fire;
+    public int hp = 5;
 
-    private int speed = FrameConstant.GAME_SPEED*4;
+    private boolean fire;
+    private boolean fire2;
+
+
+    public int speed = FrameConstant.GAME_SPEED*4;
 
     private boolean up, right, down, left;
 
@@ -26,6 +30,15 @@ public class Plane extends BaseSprite implements Drawable, Moveable {
                 FrameConstant.FRAME_HEIGHT - ImageMap.get("my01").getHeight(null),
                 ImageMap.get("my01"));
     }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
 
     public Plane(int x, int y, Image image) {
         super(x, y);
@@ -40,15 +53,20 @@ public class Plane extends BaseSprite implements Drawable, Moveable {
                 null);
         move();
         fire();
+        fire2();
         if (fire){
             index++;
             if (index>=5){
                 index = 0;
             }
         }
+        if (fire2){
+            index++;
+            if (index>=25){
+                index = 0;
+            }
+        }
     }
-
-
     private int index ;
     /**
      * 开火方法
@@ -62,6 +80,17 @@ public class Plane extends BaseSprite implements Drawable, Moveable {
                     getX() + (image.getWidth(null)/4) -ImageMap.get("myb_3").getWidth(null)/4,
                     getY() - image.getHeight(null)/4,
                     ImageMap.get("myb_3")
+            ));
+
+        }
+    }
+    public  void  fire2() {
+        if (fire2 && index == 0) {
+            GameFrame gameFrame = DateStore.get("gameFrame");
+            gameFrame.bulletList2.add(new Bullet(
+                    getX() + (image.getWidth(null) / 4) - ImageMap.get("bisha").getWidth(null) / 4,
+                    getY() - image.getHeight(null) / 4,
+                    ImageMap.get("bisha")
             ));
 
         }
@@ -82,9 +111,6 @@ public class Plane extends BaseSprite implements Drawable, Moveable {
             setX(getX() - speed );
         }
         borderTesting();
-
-
-
     }
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_W){
@@ -101,6 +127,9 @@ public class Plane extends BaseSprite implements Drawable, Moveable {
         }
         if (e.getKeyCode() == KeyEvent.VK_J){
             fire = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_K){
+            fire2 = true;
         }
     }
     public void borderTesting(){
@@ -120,12 +149,6 @@ public class Plane extends BaseSprite implements Drawable, Moveable {
 
     }
 
-
-
-
-
-
-
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_W){
             up = false;
@@ -142,6 +165,9 @@ public class Plane extends BaseSprite implements Drawable, Moveable {
         if (e.getKeyCode() == KeyEvent.VK_J){
             fire = false;
         }
+        if (e.getKeyCode() == KeyEvent.VK_K){
+            fire2 = false;
+        }
 
     }
     @Override
@@ -149,4 +175,13 @@ public class Plane extends BaseSprite implements Drawable, Moveable {
         return new Rectangle(getX(),getY(),image.getWidth(null)/2,image.getHeight(null)/2);
     }
 
-}
+
+
+
+
+
+    }
+
+
+
+
